@@ -28,7 +28,7 @@
 }
 
 .table tbody tr td:not([data-primary]) {
-  @apply py-6;
+  @apply py-3;
 }
 
 .table thead td {
