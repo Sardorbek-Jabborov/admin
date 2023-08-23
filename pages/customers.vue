@@ -3,7 +3,7 @@
     <div v-if="loading" class="middle px-5 py-20">
       <i class="fa fa-spinner-third text-4xl text-primary animate-spin"></i>
     </div>
-    <Table>
+    <Table class="pt-10">
       <template #thead>
         <td data-orded>#</td>
         <td class="w-1/4 !text-left">F.I.Sh.</td>
@@ -90,7 +90,7 @@
 </template>
 
 <script setup>
-// import {useApi} from "@/helpers/axios";
+import {useApi} from "@/helpers/axios";
 import {onMounted, ref, reactive, watch, computed} from 'vue';
 import {useRoute} from "vue-router";
 import {useRouter} from "vue-router";
