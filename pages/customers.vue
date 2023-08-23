@@ -90,7 +90,7 @@
 </template>
 
 <script setup>
-// import {useApi} from "@/helpers/axios";
+import {useApi} from "@/helpers/axios";
 import {onMounted, ref, reactive, watch, computed} from 'vue';
 import {useRoute} from "vue-router";
 import {useRouter} from "vue-router";
@@ -106,62 +106,7 @@ const pageSize = ref(10);
 const currentPage = ref(1);
 
 const sponsors = reactive({
-  data: [
-    {
-      full_name: "ASDFADSF ADFASD",
-      phone: "+998934654565",
-      sum: "46484961",
-      spent: "651516",
-      created_at: "19.12.2005",
-      get_status_display: "active"
-
-    },
-    {
-      full_name: "asdvalsdmjvnsd",
-      phone: "+998934655",
-      sum: "45631312",
-      spent: "345y654",
-      created_at: "19.12.2005",
-      get_status_display: "active"
-
-    },
-    {
-      full_name: "uurgkkrg",
-      phone: "+934654565",
-      sum: "5162552",
-      spent: "651516",
-      created_at: "19.12.2005",
-      get_status_display: "active"
-
-    },
-    {
-      full_name: "okjnko",
-      phone: "+989561",
-      sum: "9845623",
-      spent: "13246",
-      created_at: "19.12.2005",
-      get_status_display: "active"
-
-    },
-    {
-      full_name: "huhefd",
-      phone: "+99893465",
-      sum: "45484",
-      spent: "999411",
-      created_at: "19.12.2005",
-      get_status_display: "active"
-
-    },
-    {
-      full_name: "asdfasdfnka",
-      phone: "+998934654565",
-      sum: "848948",
-      spent: "458745",
-      created_at: "19.12.2005",
-      get_status_display: "active"
-
-    }
-  ],
+  data: [],
   total: 0,
 });
 
@@ -182,7 +127,8 @@ const sponsors = reactive({
 
 const fetchData = async () => {
   try {
-    const response = await useApi.get(`/sponsor-list/?page=${currentPage.value}&page_size=${pageSize.value}`);
+    const response = await useApi.get(`http://127.0.0.1:8000/api/consumers/?page=${currentPage.value}&page_size=${pageSize.value}`);
+    console.log(response.results)
     sponsors.data = response.results;
     sponsors.total = response.count;
     console.log(sponsors.data)
@@ -192,7 +138,7 @@ const fetchData = async () => {
 }
 onMounted(() => {
   fetchData()
-  extractRouteParams();
+  // extractRouteParams();
 })
 
 watch([pageSize, currentPage], () => {
