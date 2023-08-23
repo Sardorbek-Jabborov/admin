@@ -7,11 +7,9 @@
       <template #thead>
         <td data-orded>#</td>
         <td class="w-1/4 !text-left">F.I.Sh.</td>
-        <td>Tel.raqami</td>
-        <td>Homiylik summasi</td>
-        <td>Sarflagan summa</td>
-        <td>Sana</td>
-        <td>Holati</td>
+        <td>Tel. raqam</td>
+        <td>Tel. raqam 2</td>
+        <td>Qo'shilgan sana</td>
         <td>Amallar</td>
       </template>
       <template #tbody v-if="!loading">
@@ -21,32 +19,12 @@
           </td>
           <td class="!text-left" data-primary :title="sponsor?.full_name">
             <span class="line-clamp-2 font-medium text-15p">
-              {{ sponsor?.full_name }}
+              {{ sponsor?.fio }}
             </span>
           </td>
-          <td class="!w-max">{{ sponsor?.phone }}</td>
-          <td>
-            <span class="font-medium text-slate-700">
-              {{ sponsor?.sum }}
-              <span class="text-silver">usz</span>
-            </span>
-          </td>
-          <td>
-            <span class="font-medium text-slate-700">
-              {{ sponsor?.spent }}
-              <span class="text-silver">usz</span>
-            </span>
-          </td>
-          <td>
-            <span class="font-medium text-slate-700">
-              {{ dayjs(sponsor?.created_at).format('DD.MM.YYYY') }}
-            </span>
-          </td>
-          <td>
-            <span class="font-medium" :class="sponsor?.get_status_display">
-              {{ sponsor?.get_status_display }}
-            </span>
-          </td>
+          <td class="!w-max">{{ sponsor?.phone_number }}</td>
+          <td class="!w-max">{{ sponsor?.phone_number2 }}</td>
+          <td class="!w-max">{{ sponsor?.created_at }}</td>
 
           <td>
             <button class="text-xl text-primary">
@@ -143,7 +121,7 @@ onMounted(() => {
 
 watch([pageSize, currentPage], () => {
   fetchData();
-  updateRoute();
+  // updateRoute();
 });
 
 const totalPages = computed(() => Math.ceil(sponsors.data.length / pageSize.value));
