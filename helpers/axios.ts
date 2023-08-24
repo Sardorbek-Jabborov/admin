@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
 // import {getItem} from "@/service/localstorage";
 
 // Set base URL
-axios.defaults.baseURL = 'https://metsenatclub.xn--h28h.uz/api/v1';
+axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
 
 // Set access token
 // const accessToken = getItem('access_token');

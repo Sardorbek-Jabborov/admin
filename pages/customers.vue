@@ -9,6 +9,7 @@
         <td class="w-1/4 !text-left">F.I.Sh.</td>
         <td>Tel. raqam</td>
         <td>Tel. raqam 2</td>
+        <td>Qarz</td>
         <td>Qo'shilgan sana</td>
         <td>Amallar</td>
       </template>
@@ -24,6 +25,7 @@
           </td>
           <td class="!w-max">{{ sponsor?.phone_number }}</td>
           <td class="!w-max">{{ sponsor?.phone_number2 }}</td>
+          <td class="!w-max">{{ sponsor?.depts }} uzc</td>
           <td class="!w-max">{{ sponsor?.created_at }}</td>
 
           <td>
@@ -60,8 +62,6 @@
           </option>
         </select>
       </div>
-
-
     </div>
 
   </div>
@@ -72,7 +72,6 @@ import {useApi} from "@/helpers/axios";
 import {onMounted, ref, reactive, watch, computed} from 'vue';
 import {useRoute} from "vue-router";
 import {useRouter} from "vue-router";
-import dayjs from "dayjs";
 import Table from '@/components/CTable.vue'
 
 const route = useRoute()
@@ -88,24 +87,9 @@ const sponsors = reactive({
   total: 0,
 });
 
-// async function getSponsors() {
-//   loading.value = true
-//   try {
-//     console.log("try")
-//     const res = await useApi.get("/sponsor-list")
-//     sponsors.data = res.results
-//     console.log("res", sponsors.data)
-//   } catch (error) {
-//     console.log(error)
-//   } finally {
-//     loading.value = false
-//   }
-// }
-
-
 const fetchData = async () => {
   try {
-    const response = await useApi.get(`http://127.0.0.1:8000/api/consumers/?page=${currentPage.value}&page_size=${pageSize.value}`);
+    const response = await useApi.get(`/consumers/?page=${currentPage.value}&page_size=${pageSize.value}`);
     console.log(response.results)
     sponsors.data = response.results;
     sponsors.total = response.count;
@@ -116,48 +100,14 @@ const fetchData = async () => {
 }
 onMounted(() => {
   fetchData()
-  // extractRouteParams();
 })
 
 watch([pageSize, currentPage], () => {
   fetchData();
-  // updateRoute();
 });
 
 const totalPages = computed(() => Math.ceil(sponsors.data.length / pageSize.value));
 
-// const pages = computed(() => {
-//   const range = [];
-//   for (let i = 1; i <= totalPages.value; i++) {
-//     range.push(i);
-//   }
-//   return range;
-// });
-
-// Go to the specified page
-// const goToPage = (page) => {
-//   currentPage.value = page;
-// };
-
-// Update the route with the current page and page size parameters
-// const updateRoute = () => {
-//   router.push({
-//     query: {
-//       page: currentPage.value,
-//       page_size: pageSize.value,
-//     },
-//   });
-// };
-
-// const extractRouteParams = () => {
-//   const query = route.query;
-//   if (query.page) {
-//     currentPage.value = Number(query.page);
-//   }
-//   if (query.page_size) {
-//     pageSize.value = Number(query.page_size);
-//   }
-// };
 
 const calculateOrder = (index) => {
   return (currentPage.value - 1) * pageSize.value + index + 1;
