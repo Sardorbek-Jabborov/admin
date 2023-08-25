@@ -1,8 +1,8 @@
 import axios, {AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
-// import {getItem} from "@/service/localstorage";
+import {getItem} from "@/service/localstorage";
 
 // Set base URL
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
+axios.defaults.baseURL = 'https://e9e3-188-113-231-221.ngrok-free.app/api';
 
 // Set access token
 // const accessToken = getItem('access_token');

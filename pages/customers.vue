@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-x-auto">
+  <div class="relative">
     <div v-if="loading" class="middle px-5 py-20">
       <i class="fa fa-spinner-third text-4xl text-primary animate-spin"></i>
     </div>
@@ -29,7 +29,7 @@
           <td class="!w-max">{{ sponsor?.created_at }}</td>
 
           <td>
-            <button class="text-xl text-primary">
+            <button class="text-xl text-primary" @click="toggleModal">
               <svg
                   width="24"
                   height="24"
@@ -53,7 +53,21 @@
       </template>
     </Table>
 
-    <div class="container">
+    <Transition name="fade">
+      <div
+          v-if="showModal"
+          class="fixed top-0 left-0 w-full h-full z-50 bg-modal hidden opacity-0"
+          :class="{ '!block opacity-100 overflow-hidden ': showModal }"
+          @click="onClickOutside"
+      >
+        <ModalCustomers
+            class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 sm:max-w-[587px] w-[70%] sm:w-full modal-content"
+            @close="toggleModal"
+            :show="showModal"
+        />
+      </div>
+    </Transition>
+    <div class="px-10">
       <div class="page-size">
         <label for="pageSize">Page Size:</label>
         <select v-model="pageSize" id="pageSize" @change="updatePageSize">
@@ -77,6 +91,7 @@ import Table from '@/components/CTable.vue'
 const route = useRoute()
 const router = useRouter()
 
+const showModal = ref(false)
 const loading = ref(false)
 const pageSizeOptions = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 const pageSize = ref(10);
@@ -86,6 +101,19 @@ const sponsors = reactive({
   data: [],
   total: 0,
 });
+
+function onClickOutside(event) {
+  const modalContent = document.querySelector('.modal-content');
+  if (modalContent && !modalContent.contains(event.target)) {
+    document.body.style.overflow = 'auto';
+    showModal.value = false;
+  }
+}
+
+const toggleModal = () => {
+  showModal.value = !showModal.value
+
+}
 
 const fetchData = async () => {
   try {

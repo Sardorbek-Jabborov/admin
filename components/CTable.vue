@@ -15,7 +15,7 @@
 
 <style>
 .table tbody tr td {
-  @apply text-center !mb-5 py-2 first:pl-4 first:rounded-l-lg first:border-l last:rounded-r-lg last:border-r last:pr-2 text-sm text-black font-normal bg-white border-y;
+  @apply text-center !mb-5 py-2 first:pl-4 first:rounded-l-lg first:border-l last:rounded-r-lg last:border-r last:pr-2 text-sm text-black-100 font-normal bg-white border-y;
 }
 
 .table td[scope='row'],
