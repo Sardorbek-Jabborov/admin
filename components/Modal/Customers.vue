@@ -1,7 +1,7 @@
 <template>
   <div class="p-7 bg-white rounded-xl max-w-[586px]">
     <div class="flex justify-between pb-7 border-b border-gray-100">
-      <p class="text-2xl font-bold text-blue-700">Tahrirlash</p>
+      <p class="text-2xl font-bold text-blue-700">{{ props.consumer?.id ? "Tahrirlash" : "Qo'shish" }}</p>
       <button @click='close'>
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M21 7L7 21" stroke="#B2B7C1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -23,10 +23,10 @@
               label="Telefon raqami"
               type="phone"
               placeholder=""
-              v-model="form.phoneNumber"
+              v-model="form.phone_number"
               src="/icons/flag.svg"
               v-maska="'## ### ## ##'"
-              :error="$v.phoneNumber.$error"
+              :error="$v.phone_number.$error"
           >+998</Input
           >
         </ClientOnly>
@@ -35,16 +35,16 @@
               label="Qo'shimcha telefon raqami"
               type="phone"
               placeholder=""
-              v-model="form.phoneNumber2"
+              v-model="form.phone_number2"
               src="/icons/flag.svg"
               v-maska="'## ### ## ##'"
-              :error="$v.phoneNumber2.$error"
+              :error="$v.phone_number2.$error"
           >+998</Input
           >
         </ClientOnly>
       </div>
       <div class="mt-3 flex justify-end">
-        <ButtonVButton class="flex gap-2 group">
+        <ButtonVButton class="flex gap-2 group" >
           <div>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -61,6 +61,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import {useApi} from "@/helpers/axios";
 import {useVuelidate} from '@vuelidate/core'
 import {required} from '@vuelidate/validators'
 import {reactive, ref} from 'vue'
@@ -74,14 +75,14 @@ interface Props {
 
 interface IContactForm {
   fio?: string
-  phoneNumber?: string
-  phoneNumber2?: string
+  phone_number?: string
+  phone_number2?: string
 }
 
 const form = reactive<IContactForm>({
   fio: props.consumer?.fio,
-  phoneNumber: props.consumer?.phone_number?.slice(4, 13),
-  phoneNumber2: props.consumer?.phone_number2?.slice(4, 13),
+  phone_number: props.consumer?.phone_number?.slice(4, 13),
+  phone_number2: props.consumer?.phone_number2?.slice(4, 13),
 })
 
 const validPhones = [
@@ -102,29 +103,40 @@ const validPhones = [
 
 const isValidPhone = (val: string) => {
   const phone = val.replace(/[\s)(-]/g, '')
+  console.log(phone)
+  if (phone.length === 0) return true
   return phone.length === 9 && validPhones.includes(phone.substring(0, 2))
 }
 const rules = {
-  phoneNumber: {
+  phone_number: {
     required,
     isValidPhone,
   },
   fio: {
     required,
   },
-  phoneNumber2: {
+  phone_number2: {
     isValidPhone,
   },
 }
 
 const $v = useVuelidate<IContactForm>(rules, form)
 const emit = defineEmits(['open', 'close'])
-const submitForm = () => {
+const submitForm = async () => {
   $v.value.$touch()
   if ($v.value.$invalid) {
     console.log($v.value.$error)
   } else {
-    console.log("hi")
+    const url = props.consumer?.id ? `/consumers/${props.consumer.id}/` : '/consumers/'
+    const method = props.consumer?.id ? 'put' : 'post'
+    const data = {
+      fio: form.fio,
+      phone_number: `+998${form.phone_number}`,
+      phone_number2: `+998${form.phone_number2}`,
+    }
+    const response = await useApi[method](url, data)
+    console.log(response)
+    props.consumer.value = response
   }
 }
 

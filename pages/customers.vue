@@ -21,9 +21,9 @@
             </defs>
           </svg>
         </div>
-        <input type="text" class="bg-transparent outline-0">
+        <input type="text" class="bg-transparent outline-0" placeholder="Izlash..." @keyup="fetchData" v-model="search">
       </div>
-      <ButtonVButton class="flex group">
+      <ButtonVButton class="flex group"  @click="toggleModal({})">
         <div>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19.9999 11.9999H4.00007" stroke="white" stroke-width="2" stroke-linecap="round"
@@ -128,6 +128,7 @@ const loading = ref(false)
 const pageSizeOptions = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 const pageSize = ref(10);
 const currentPage = ref(1);
+const search = ref('');
 
 const sponsors = reactive({
   data: [],
@@ -140,6 +141,7 @@ function onClickOutside(event) {
   if (modalContent && !modalContent.contains(event.target)) {
     document.body.style.overflow = 'auto';
     showModal.value = false;
+    currect_consumer.value = {}
   }
 }
 
@@ -150,7 +152,7 @@ const toggleModal = (sponsor) => {
 
 const fetchData = async () => {
   try {
-    const response = await useApi.get(`/consumers/?page=${currentPage.value}&page_size=${pageSize.value}`);
+    const response = await useApi.get(`/consumers/?search=${search.value}&page=${currentPage.value}&page_size=${pageSize.value}`);
     console.log(response.results)
     sponsors.data = response.results;
     sponsors.total = response.count;
