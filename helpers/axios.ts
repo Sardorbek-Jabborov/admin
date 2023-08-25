@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
 import {getItem} from "@/service/localstorage";
 
 // Set base URL
-axios.defaults.baseURL = 'https://e9e3-188-113-231-221.ngrok-free.app/api';
+axios.defaults.baseURL = 'https://faf3-188-113-229-221.ngrok-free.app/api';
 
 // Set access token
 // const accessToken = getItem('access_token');
