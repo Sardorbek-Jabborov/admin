@@ -29,7 +29,7 @@
           <td class="!w-max">{{ sponsor?.created_at }}</td>
 
           <td>
-            <button class="text-xl text-primary" @click="toggleModal">
+            <button class="text-xl text-primary" @click="toggleModal(sponsor)">
               <svg
                   width="24"
                   height="24"
@@ -64,6 +64,7 @@
             class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 sm:max-w-[587px] w-[70%] sm:w-full modal-content"
             @close="toggleModal"
             :show="showModal"
+            :consumer="currect_consumer"
         />
       </div>
     </Transition>
@@ -101,6 +102,7 @@ const sponsors = reactive({
   data: [],
   total: 0,
 });
+const currect_consumer = ref({})
 
 function onClickOutside(event) {
   const modalContent = document.querySelector('.modal-content');
@@ -110,9 +112,9 @@ function onClickOutside(event) {
   }
 }
 
-const toggleModal = () => {
+const toggleModal = (sponsor) => {
+  currect_consumer.value = sponsor
   showModal.value = !showModal.value
-
 }
 
 const fetchData = async () => {

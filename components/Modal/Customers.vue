@@ -15,8 +15,8 @@
             label="F.I.Sh. (Familiya Ism Sharifingiz)"
             placeholder="Ism ..."
             type="text"
-            :error="$v.name.$error"
-            v-model="form.name"
+            :error="$v.fio.$error"
+            v-model="form.fio"
         />
         <ClientOnly>
           <Input
@@ -35,10 +35,10 @@
               label="Qo'shimcha telefon raqami"
               type="phone"
               placeholder=""
-              v-model="form.addPhoneNumber"
+              v-model="form.phoneNumber2"
               src="/icons/flag.svg"
               v-maska="'## ### ## ##'"
-              :error="$v.phoneNumber.$error"
+              :error="$v.phoneNumber2.$error"
           >+998</Input
           >
         </ClientOnly>
@@ -50,37 +50,24 @@
 import {useVuelidate} from '@vuelidate/core'
 import {required} from '@vuelidate/validators'
 import {reactive, ref} from 'vue'
+const props = defineProps<Props>()
 
 interface Props {
   show: boolean
+  consumer: any
 }
-
-const name = ref('')
-const phone_number = ref('')
-const message = ref('')
 
 interface IContactForm {
-  name?: string
+  fio?: string
   phoneNumber?: string
-  addPhoneNumber?: string
-  message?: string
-  agreement?: boolean
+  phoneNumber2?: string
 }
 
-const userPrivacy = ref(
-    `${import.meta.env.VITE_APP_ID_URL}/help-center/privacy-policy`
-)
 const form = reactive<IContactForm>({
-  name: '',
-  phoneNumber: '',
-  addPhoneNumber: '',
-  message: '',
-  agreement: false,
+  fio: props.consumer?.fio,
+  phoneNumber: props.consumer?.phone_number?.slice(4, 13),
+  phoneNumber2: props.consumer?.phone_number2?.slice(4, 13),
 })
-
-const isTrue = (val: boolean) => {
-  return val === true
-}
 
 const validPhones = [
   '90',
@@ -107,15 +94,11 @@ const rules = {
     required,
     isValidPhone,
   },
-  name: {
+  fio: {
     required,
   },
-  message: {
-    required,
-  },
-  agreement: {
-    required,
-    isTrue,
+  phoneNumber2: {
+    isValidPhone,
   },
 }
 
@@ -130,11 +113,9 @@ const submitForm = () => {
   }
 }
 
-const props = defineProps<Props>()
 
 
 function close() {
-  console.log("close")
   emit('close')
   document.body.style.overflow = 'auto'
 }
