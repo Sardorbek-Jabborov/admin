@@ -1,8 +1,7 @@
 <template>
-  <div class="p-6">
-    products
+  <div class="container">
     <div class="overflow-x-auto">
-      <div v-if="loading" class="middle px-5 py-20">
+      <div v-if="loading" class="middle py-20">
         <i class="fa fa-spinner-third text-4xl text-primary animate-spin"></i>
       </div>
       <Table class="pt-10">
@@ -21,7 +20,6 @@
               {{ product?.title }}
             </span>
             </td>
-
             <td>
               <button class="text-xl text-primary">
                 <svg
@@ -46,16 +44,13 @@
           </tr>
         </template>
       </Table>
-
-      <div class="container">
-        <div class="page-size">
-          <label for="pageSize">Page Size:</label>
-          <select v-model="pageSize" id="pageSize" @change="updatePageSize">
-            <option v-for="option in pageSizeOptions" :key="option" :value="option">
-              {{ option }}
-            </option>
-          </select>
-        </div>
+      <div class="page-size flex items-center">
+        <label for="pageSize">Ko‘rsatish:</label>
+        <select v-model="pageSize" id="pageSize" @change="updatePageSize" class="rounded-xl border">
+          <option v-for="option in pageSizeOptions" :key="option" :value="option">
+            {{ option }}
+          </option>
+        </select>
       </div>
     </div>
   </div>

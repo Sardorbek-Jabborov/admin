@@ -1,6 +1,6 @@
 <template>
   <div class="container flex flex-col h-full items-center justify-center pt-[80px]">
-    <div class="max-w-[400px] px-5">
+    <div class="max-w-[400px]">
       <img src="/logo1.svg" alt="">
     </div>
     <form @submit.prevent="onSubmit" class="p-8 bg-white rounded-xl w-[315px] mt-2">

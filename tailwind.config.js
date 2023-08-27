@@ -10,6 +10,11 @@ module.exports = {
     mode: 'jit',
     theme: {
         extend: {
+            container: {
+                center: true,
+                padding: '1rem',
+                screens: ['1200px']
+            },
             colors: {
                 red: '#FF0000',
                 purple: {

@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <div>
-      <div v-if="loading" class="px-5 py-20">
-        <span class="absolute animate-ping top-1/4 left-1/2 bg-gray-800 rounded-full h-20 w-20"></span>
+  <div class="container">
+    <div class="">
+      <div v-if="loading" class="absolute animate-ping top-1/3 left-1/2 bg-gray-800 rounded-full h-20 w-20">
       </div>
-      <div class="mt-5 mx-10 flex justify-between" v-else>
+      <div class="mt-5 flex justify-between">
         <div
             class="inline-flex gap-2 items-center bg-white py-2 px-3 rounded-xl border focus-within:border-gray-800 transition-all duration-300 ease-in-out">
           <div>
@@ -23,7 +22,8 @@
               </defs>
             </svg>
           </div>
-          <input type="text" class="bg-transparent outline-0" placeholder="Izlash..." @keyup="fetchData" v-model="search">
+          <input type="text" class="bg-transparent outline-0" placeholder="Izlash..." @keyup="fetchData"
+                 v-model="search">
         </div>
         <ButtonVButton class="flex group">
           <div>
@@ -103,7 +103,7 @@
         />
       </div>
     </Transition>
-    <div class="px-10" v-if="!loading">
+    <div class="" v-if="!loading">
       <div class="page-size flex items-center">
         <label for="pageSize">Ko‘rsatish:</label>
         <select v-model="pageSize" id="pageSize" @change="updatePageSize" class="rounded-xl border">

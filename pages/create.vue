@@ -1,3 +1,3 @@
 <template>
-  <div>create</div>
+  <div class="container">create</div>
 </template>
