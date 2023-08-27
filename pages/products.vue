@@ -1,49 +1,105 @@
 <template>
   <div class="container">
-    <div class="overflow-x-auto">
-      <div v-if="loading" class="middle py-20">
-        <i class="fa fa-spinner-third text-4xl text-primary animate-spin"></i>
+    <div class="">
+      <div v-if="loading" class="absolute animate-ping top-1/3 left-1/2 bg-gray-800 rounded-full h-20 w-20">
       </div>
-      <Table class="pt-10">
-        <template #thead>
-          <td data-orded>#</td>
-          <td class="w-1/4 !text-left">Nomi</td>
-          <td>Amallar</td>
-        </template>
-        <template #tbody v-if="!loading">
-          <tr v-for="(product, index) in products.data" :key="index">
-            <td class="px-6" scope="row">
-              {{ calculateOrder(index) }}
-            </td>
-            <td class="!text-left" data-primary :title="sponsor?.full_name">
+      <div class="mt-5 flex justify-between">
+        <div
+            class="inline-flex gap-2 items-center bg-white py-2 px-3 rounded-xl border focus-within:border-gray-800 transition-all duration-300 ease-in-out">
+          <div>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#clip0_120_539)">
+                <path
+                    d="M8.33333 14.1667C11.555 14.1667 14.1667 11.555 14.1667 8.33333C14.1667 5.11167 11.555 2.5 8.33333 2.5C5.11167 2.5 2.5 5.11167 2.5 8.33333C2.5 11.555 5.11167 14.1667 8.33333 14.1667Z"
+                    stroke="#B1B1B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17.5 17.5L12.5 12.5" stroke="#B1B1B8" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </g>
+              <defs>
+                <clipPath id="clip0_120_539">
+                  <rect width="20" height="20" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <input type="text" class="bg-transparent outline-0" placeholder="Izlash..." @keyup="fetchData"
+                 v-model="search">
+        </div>
+        <ButtonVButton class="flex group" @click="toggleModal({})">
+          <div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.9999 11.9999H4.00007" stroke="white" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
+              <path d="M12 4V19.9999" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
+            </svg>
+          </div>
+          <span>Qo'shish</span>
+        </ButtonVButton>
+      </div>
+    </div>
+    <Table class="pt-5" v-if="!loading">
+      <template #thead>
+        <td data-orded>#</td>
+        <td class="w-1/4 !text-left">Nomi</td>
+        <td>Karobka</td>
+        <td>Qoldiq</td>
+        <td>Amallar</td>
+      </template>
+      <template #tbody v-if="!loading">
+        <tr v-for="(object, index) in objects.data" :key="index">
+          <td class="px-6" scope="row">
+            {{ calculateOrder(index) }}
+          </td>
+          <td class="!text-left" data-primary :title="object?.title">
             <span class="line-clamp-2 font-medium text-15p">
-              {{ product?.title }}
+              {{ object?.title }}
             </span>
-            </td>
-            <td>
-              <button class="text-xl text-primary">
-                <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
+          </td>
+          <td class="!w-max">{{ object?.count_in_box }}</td>
+          <td class="!w-max">{{ object?.stock_quantity }}</td>
+
+          <td>
+            <button class="text-xl text-primary" @click="toggleModal(object)">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_40_3970)">
                   <path
-                      opacity="0.4"
-                      d="M23.855 11.3917C21.5954 6.98292 17.1221 4 12 4C6.87789 4 2.40331 6.985 0.144977 11.3921C0.0496613 11.5806 0 11.7889 0 12.0002C0 12.2115 0.0496613 12.4198 0.144977 12.6083C2.40456 17.0171 6.87789 20 12 20C17.1221 20 21.5966 17.015 23.855 12.6079C23.9503 12.4194 24 12.2111 24 11.9998C24 11.7885 23.9503 11.5802 23.855 11.3917ZM12.0058 18H12C10.4097 17.9992 8.88485 17.3669 7.76077 16.2419C6.63669 15.117 6.00542 13.5917 6.00581 12.0015C6.0062 10.4112 6.6382 8.88618 7.76283 7.76182C8.88746 6.63747 10.4126 6.00583 12.0029 6.00583C13.5932 6.00583 15.1183 6.63747 16.243 7.76182C17.3676 8.88618 17.9996 10.4112 18 12.0015C18.0004 13.5917 17.3691 15.117 16.245 16.2419C15.1209 17.3669 13.5961 17.9992 12.0058 18Z"
-                      fill="#3366FF"
-                  />
+                      d="M9 7H6C5.46957 7 4.96086 7.21071 4.58579 7.58579C4.21071 7.96086 4 8.46957 4 9V18C4 18.5304 4.21071 19.0391 4.58579 19.4142C4.96086 19.7893 5.46957 20 6 20H15C15.5304 20 16.0391 19.7893 16.4142 19.4142C16.7893 19.0391 17 18.5304 17 18V15"
+                      stroke="#3365FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path
-                      d="M15.8608 13.0363C15.7247 13.5433 15.4899 14.0186 15.1698 14.4347C14.8497 14.8509 14.4506 15.1998 13.9955 15.4614C13.5403 15.7231 13.038 15.8924 12.5173 15.9596C11.9966 16.0268 11.4677 15.9906 10.961 15.853C10.4544 15.7155 9.97979 15.4794 9.56452 15.1581C9.14926 14.8368 8.80147 14.4368 8.54107 13.9809C8.28068 13.525 8.11279 13.0222 8.04704 12.5013C7.98129 11.9805 8.01897 11.4517 8.15791 10.9454C8.54194 11.228 9.01453 11.3636 9.48997 11.3277C9.96541 11.2917 10.4122 11.0865 10.7494 10.7494C11.0865 10.4122 11.2917 9.96542 11.3276 9.48998C11.3636 9.01454 11.228 8.54195 10.9454 8.15792C11.6237 7.96431 12.3412 7.95486 13.0243 8.13054C13.7075 8.30621 14.3314 8.66067 14.8321 9.15747C15.3328 9.65426 15.6922 10.2755 15.8732 10.9572C16.0542 11.6389 16.0504 12.3565 15.8621 13.0363H15.8608Z"
-                      fill="#3366FF"
-                  />
-                </svg>
-              </button>
-            </td>
-          </tr>
-        </template>
-      </Table>
+                      d="M9 15H12L20.5 6.5C20.8978 6.10217 21.1213 5.56261 21.1213 5C21.1213 4.43739 20.8978 3.89782 20.5 3.5C20.1022 3.10217 19.5626 2.87868 19 2.87868C18.4374 2.87868 17.8978 3.10217 17.5 3.5L9 12V15Z"
+                      stroke="#3365FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 5L19 8" stroke="#3365FC" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_40_3970">
+                    <rect width="24" height="24" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </template>
+    </Table>
+    <Transition name="fade">
+      <div
+          v-if="showModal"
+          class="fixed top-0 left-0 w-full h-full z-50 bg-modal hidden opacity-0"
+          :class="{ '!block opacity-100 overflow-hidden ': showModal }"
+          @click="onClickOutside"
+      >
+        <ModalProducts
+            class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 sm:max-w-[587px] w-[70%] sm:w-full modal-content"
+            @close="toggleModal"
+            :show="showModal"
+            :object="currect_object"
+        />
+      </div>
+    </Transition>
+    <div class="" v-if="!loading">
       <div class="page-size flex items-center">
         <label for="pageSize">Ko‘rsatish:</label>
         <select v-model="pageSize" id="pageSize" @change="updatePageSize" class="rounded-xl border">
@@ -66,23 +122,45 @@ import Table from '@/components/CTable.vue'
 const route = useRoute()
 const router = useRouter()
 
+const showModal = ref(false)
 const loading = ref(false)
 const pageSizeOptions = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 const pageSize = ref(10);
 const currentPage = ref(1);
+const search = ref('');
 
-const products = reactive({
+const objects = reactive({
   data: [],
   total: 0,
 });
+const currect_object = ref({})
+
+function onClickOutside(event) {
+  const modalContent = document.querySelector('.modal-content');
+  if (modalContent && !modalContent.contains(event.target)) {
+    document.body.style.overflow = 'auto';
+    showModal.value = false;
+    currect_object.value = {}
+  }
+}
+
+const toggleModal = (object) => {
+  currect_object.value = object
+  showModal.value = !showModal.value
+}
 
 const fetchData = async () => {
+  loading.value = true
   try {
-    const response = await useApi.get(`/products/?page=${currentPage.value}&page_size=${pageSize.value}`);
-    products.data = response.results;
-    products.total = response.count;
+    const response = await useApi.get(`/products/?search=${search.value}&page=${currentPage.value}&page_size=${pageSize.value}`);
+    console.log(response.results)
+    objects.data = response.results;
+    objects.total = response.count;
+    console.log(objects.data)
   } catch (error) {
-    console.error('Error fetching products  :', error);
+    console.error('Error fetching objects:', error);
+  } finally {
+    loading.value = false
   }
 }
 onMounted(() => {
@@ -92,9 +170,6 @@ onMounted(() => {
 watch([pageSize, currentPage], () => {
   fetchData();
 });
-
-const totalPages = computed(() => Math.ceil(sponsors.data.length / pageSize.value));
-
 
 const calculateOrder = (index) => {
   return (currentPage.value - 1) * pageSize.value + index + 1;
