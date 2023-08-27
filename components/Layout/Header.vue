@@ -6,9 +6,11 @@
 
 <script setup lang="ts">
 import {useRouter} from "vue-router";
+import { removeItem } from "@/service/localstorage";
 
 const router = useRouter()
 const logOut = () => {
+  removeItem('access')
   router.push('/login')
 }
 
