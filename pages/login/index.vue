@@ -81,6 +81,10 @@ function loginn() {
   router.push('/')
 }
 
+definePageMeta({
+  layout: "auth",
+});
+
 function verify(event: any) {
   recaptchaToken.value = event;
 }
@@ -117,6 +121,8 @@ const error = reactive({
 //     }
 //   }
 // }
+
+
 
 function togglePassword() {
   isVisible.value = !isVisible.value;
