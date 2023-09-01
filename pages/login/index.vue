@@ -70,16 +70,13 @@
 import {reactive, ref} from 'vue';
 import {useRouter} from "vue-router";
 // import {useAuthStore} from '@/stores';
-// import {useApi} from '@/helpers/axios';
-
+import {useApi} from '@/helpers/axios';
+import {getItem, setItem} from "@/service/localstorage";
 // const store = useAuthStore();
 let recaptchaToken = ref();
 
 const router = useRouter()
 
-function loginn() {
-  router.push('/')
-}
 
 definePageMeta({
   layout: "auth",
@@ -98,6 +95,25 @@ const error = reactive({
   show: false,
   message: ''
 });
+
+
+async function loginn() {
+
+  console.log(login.value)
+  console.log(password.value)
+  try {
+    const response = await useApi.post(`/token/`, {
+      username: login.value,
+      password: password.value
+    });
+    setItem('access', response.access)
+    router.push('/')
+  } catch (error) {
+    console.error('Error fetching sponsors:', error);
+  }
+  // router.push('/')
+}
+
 
 // async function onSubmit() {
 //   if (recaptchaToken.value !== '') {
