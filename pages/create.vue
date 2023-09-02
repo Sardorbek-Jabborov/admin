@@ -46,6 +46,14 @@
           <option v-for="consumer in consumers" :value="consumer.id">{{consumer.fio}}</option>
         </select>
       </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="customers">Kuryer:</label>
+        <select name="customers" class="border border-gray-600 rounded- md p-2">
+          <option disabled selected value>Tanlang:</option>
+          <option v-for="courier in couriers" :value="courier.id">{{courier.fio}}</option>
+        </select>
+      </div>
     </div>
   </div>
 </template>
@@ -97,6 +105,21 @@ const basket = reactive({
 )
 
 const consumers = reactive([
+  {
+    "id": 1,
+    "fio": "Vali"
+  },
+  {
+    "id": 2,
+    "fio": "QodirAli"
+  },
+  {
+    "id": 3,
+    "fio": "BehzodAka ..."
+  }
+])
+
+const couriers = reactive([
   {
     "id": 1,
     "fio": "Vali"
