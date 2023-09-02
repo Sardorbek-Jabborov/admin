@@ -54,6 +54,15 @@
           <option v-for="courier in couriers" :value="courier.id">{{courier.fio}}</option>
         </select>
       </div>
+
+      <div class="flex flex-col gap-2 mt-5">
+        <ButtonVButton class="py-1">
+            Savatga qo'shish
+        </ButtonVButton>
+        <ButtonVButton class="py-1">
+            Check
+        </ButtonVButton>
+      </div>
     </div>
   </div>
 </template>
