@@ -29,6 +29,17 @@
               :error="$v.price.$error"
           />
         </ClientOnly>
+        <ClientOnly>
+          <Input
+              label="Karobka"
+              type="count_in_box"
+              placeholder=""
+              v-model="form.count_in_box"
+              src="/icons/flag.svg"
+              v-maska="'## ### ## ##'"
+              :error="$v.count_in_box.$error"
+          />
+        </ClientOnly>
       </div>
       <div class="mt-3 flex justify-end">
         <ButtonVButton class="flex gap-2 group" >
@@ -63,11 +74,13 @@ interface Props {
 interface IContactForm {
   title?: string
   price?: number
+  count_in_box?: number
 }
 
 const form = reactive<IContactForm>({
   title: props.object?.title,
-  price: props.object?.price
+  price: props.object?.price,
+  count_in_box: props.object?.count_in_box,
 })
 
 const rules = {
@@ -75,6 +88,9 @@ const rules = {
     required,
   },
   price: {
+    required,
+  },
+  count_in_box: {
     required,
   }
 }
@@ -91,7 +107,8 @@ const submitForm = async () => {
     const method = props.object?.id ? 'put' : 'post'
     const data = {
       title: form.title,
-      price: form.price
+      price: form.price,
+      count_in_box: form.count_in_box,
     }
     const response = await useApi[method](url, data)
     console.log(response)
