@@ -20,7 +20,7 @@
     <div class="basis-1/3 bg-white rounded-xl p-4">
       <h3 class="text-2xl text-black-100 font-medium">Savatcha</h3>
       <div v-if="basket.products.length > 0">
-        <p>Savatcahdagi mahsulotlar soni: <span class="text-lg font-bold">{{ basket?.products?.length }}</span></p>
+        <p>Savatchadagi mahsulotlar soni: <span class="text-lg font-bold">{{ basket?.products?.length }}</span></p>
         <div
             class="mt-3 flex justify-between border-b border-gray-600 pb-1"
             v-for="basketItem in basket.products"
@@ -41,11 +41,9 @@
       </div>
       <div class="flex flex-col gap-2">
         <label for="customers">Mijoz:</label>
-        <select name="customers" class="border border-gray-600 rounded-md p-2">
+        <select name="customers" class="border border-gray-600 rounded- md p-2">
           <option disabled selected value>Tanlang:</option>
-          <option>Option 1</option>
-          <option>Option 2</option>
-          <option>Option 3</option>
+          <option v-for="consumer in consumers" :value="consumer.id">{{consumer.fio}}</option>
         </select>
       </div>
     </div>
@@ -97,6 +95,21 @@ const basket = reactive({
       "products": [],
     }
 )
+
+const consumers = reactive([
+  {
+    "id": 1,
+    "fio": "Vali"
+  },
+  {
+    "id": 2,
+    "fio": "QodirAli"
+  },
+  {
+    "id": 3,
+    "fio": "BehzodAka ..."
+  }
+])
 
 const addToBasket = (id: number) => {
   const item = products.find((el) => el.id == id);
