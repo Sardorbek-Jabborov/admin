@@ -20,7 +20,7 @@
     <div class="basis-1/3 bg-white rounded-xl p-4">
       <h3 class="text-2xl text-black-100 font-medium">Savatcha</h3>
       <div v-if="basket.products.length > 0" class="mt-2">
-        <p>Savatcahdagi mahsulotlar soni: <span class="text-lg font-bold">{{ basket?.products?.length }}</span></p>
+        <p>Savatchadagi mahsulotlar soni: <span class="text-lg font-bold">{{ basket?.products?.length }}</span></p>
         <div class="flex items-center gap-2 mt-2">
           <p>Savatchani tozalash</p>
           <button @click="clearBasket">
@@ -85,12 +85,27 @@
       </div>
       <div class="flex flex-col gap-2">
         <label for="customers">Mijoz:</label>
-        <select name="customers" class="border border-gray-600 rounded-md p-2">
+        <select name="customers" class="border border-gray-600 rounded- md p-2">
           <option disabled selected value>Tanlang:</option>
-          <option>Option 1</option>
-          <option>Option 2</option>
-          <option>Option 3</option>
+          <option v-for="consumer in consumers" :value="consumer.id">{{consumer.fio}}</option>
         </select>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="customers">Kuryer:</label>
+        <select name="customers" class="border border-gray-600 rounded- md p-2">
+          <option disabled selected value>Tanlang:</option>
+          <option v-for="courier in couriers" :value="courier.id">{{courier.fio}}</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-2 mt-5">
+        <ButtonVButton class="py-1">
+            Savatga qo'shish
+        </ButtonVButton>
+        <ButtonVButton class="py-1">
+            Check
+        </ButtonVButton>
       </div>
     </div>
   </div>
@@ -141,6 +156,36 @@ const basket = reactive({
       "products": [],
     }
 )
+
+const consumers = reactive([
+  {
+    "id": 1,
+    "fio": "Vali"
+  },
+  {
+    "id": 2,
+    "fio": "QodirAli"
+  },
+  {
+    "id": 3,
+    "fio": "BehzodAka ..."
+  }
+])
+
+const couriers = reactive([
+  {
+    "id": 1,
+    "fio": "Vali"
+  },
+  {
+    "id": 2,
+    "fio": "QodirAli"
+  },
+  {
+    "id": 3,
+    "fio": "BehzodAka ..."
+  }
+])
 
 const clearBasket = () => {
   basket.products = []

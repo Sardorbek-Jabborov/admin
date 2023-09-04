@@ -44,6 +44,7 @@
         <td data-orded>#</td>
         <td class="w-1/4 !text-left">Nomi</td>
         <td>Karobka</td>
+        <td>Narx</td>
         <td>Qoldiq</td>
         <td>Amallar</td>
       </template>
@@ -58,6 +59,7 @@
             </span>
           </td>
           <td class="!w-max">{{ object?.count_in_box }}</td>
+          <td class="!w-max">{{ object?.price }}</td>
           <td class="!w-max">{{ object?.stock_quantity }}</td>
 
           <td>
