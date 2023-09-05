@@ -89,7 +89,7 @@
         <label for="customers">Mijoz:</label>
         <select name="customers" class="border border-gray-600 rounded- md p-2">
           <option disabled selected value>Tanlang:</option>
-          <option v-for="consumer in consumers" :value="consumer.id">{{ consumer.fio }}</option>
+          <option v-for="consumer in consumers.data" :value="consumer.id">{{ consumer.fio }}</option>
         </select>
       </div>
 
@@ -97,7 +97,7 @@
         <label for="customers">Kuryer:</label>
         <select name="customers" class="border border-gray-600 rounded- md p-2">
           <option disabled selected value>Tanlang:</option>
-          <option v-for="courier in couriers" :value="courier.id">{{ courier.fio }}</option>
+          <option v-for="courier in couriers.data" :value="courier.id">{{ courier.fio }}</option>
         </select>
       </div>
 
@@ -114,7 +114,11 @@
 </template>
 
 <script setup lang="ts">
-
+import {useApi} from "@/helpers/axios";
+import {onMounted, ref, reactive, watch, computed} from 'vue';
+import {useRoute} from "vue-router";
+import {useRouter} from "vue-router";
+import Table from '@/components/CTable.vue'
 
 const products = [
   {
@@ -159,35 +163,27 @@ const basket = reactive({
     }
 )
 
-const consumers = reactive([
-  {
-    "id": 1,
-    "fio": "Vali"
-  },
-  {
-    "id": 2,
-    "fio": "QodirAli"
-  },
-  {
-    "id": 3,
-    "fio": "BehzodAka ..."
-  }
-])
+const consumers = reactive({"data": []})
 
-const couriers = reactive([
-  {
-    "id": 1,
-    "fio": "Vali"
-  },
-  {
-    "id": 2,
-    "fio": "QodirAli"
-  },
-  {
-    "id": 3,
-    "fio": "BehzodAka ..."
+const couriers = reactive({"data": []})
+
+async function load_page() {
+  try {
+    const response = await useApi.get('/consumers/?page_size=100');
+    consumers.data = response.results;
+  } catch (error) {
+    console.error('Error fetching objects:', error);
   }
-])
+
+  try {
+    const response = await useApi.get('/couriers/?page_size=100');
+    couriers.data = response.results;
+  } catch (error) {
+    console.error('Error fetching objects:', error);
+  }
+}
+
+onMounted(load_page)
 
 const clearBasket = () => {
   basket.products = []
