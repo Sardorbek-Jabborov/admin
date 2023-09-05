@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
 import {getItem} from "@/service/localstorage";
 
 // Set base URL read from
-axios.defaults.baseURL = 'http://localhost:8000/api';
+axios.defaults.baseURL = 'http://devserver.uz/api';
 
 // Set access token
 const accessToken = getItem('access');
