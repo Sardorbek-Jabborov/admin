@@ -57,13 +57,15 @@
             <p>Qutidagi miqdori: <span class="font-bold">{{ basketItem.product.amount }} dona</span></p>
             <p>Narxi: <span class="font-bold">{{ basketItem.product.price }} UZS</span></p>
             <p>Savatdagi miqdori: <span class="font-bold">{{ basketItem.quantity }} dona</span></p>
-            <div class="flex items-center justify-between p-2">
-              <div class="rounded-2xl border border-gray-700 flex gap-2 w-full">
-                <button @click="basketItem.quantity--" class="p-2">-</button>
-                <input type="number" v-model="basketItem.quantity" class="outline-0 w-auto" min="0">
-                <button @click="basketItem.quantity++" class="p-2">+</button>
+            <div class="flex items-center gap-5 p-2 w-auto">
+              <div class="rounded-lg border border-gray-700 flex gap-2 w-auto">
+                <button @click="basketItem.quantity--" class="px-4 py-2 bg-gray-200 rounded-l-lg border-r border-gray-700">-
+                </button>
+                <input type="number" v-model="basketItem.quantity" class="outline-0" min="0" onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';">
+                <button @click="basketItem.quantity++" class="px-4 py-2 bg-gray-200 rounded-r-lg border-l border-gray-700">+
+                </button>
               </div>
-              <button>
+              <button @click="deleteItem(basketItem.product.id)">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M3 6H5H21" stroke="#FF4945" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path
@@ -87,7 +89,7 @@
         <label for="customers">Mijoz:</label>
         <select name="customers" class="border border-gray-600 rounded- md p-2">
           <option disabled selected value>Tanlang:</option>
-          <option v-for="consumer in consumers" :value="consumer.id">{{consumer.fio}}</option>
+          <option v-for="consumer in consumers" :value="consumer.id">{{ consumer.fio }}</option>
         </select>
       </div>
 
@@ -95,16 +97,16 @@
         <label for="customers">Kuryer:</label>
         <select name="customers" class="border border-gray-600 rounded- md p-2">
           <option disabled selected value>Tanlang:</option>
-          <option v-for="courier in couriers" :value="courier.id">{{courier.fio}}</option>
+          <option v-for="courier in couriers" :value="courier.id">{{ courier.fio }}</option>
         </select>
       </div>
 
       <div class="flex flex-col gap-2 mt-5">
         <ButtonVButton class="py-1">
-            Savatga qo'shish
+          Buyurtma yaratish
         </ButtonVButton>
         <ButtonVButton class="py-1">
-            Check
+          Check
         </ButtonVButton>
       </div>
     </div>
@@ -190,6 +192,18 @@ const couriers = reactive([
 const clearBasket = () => {
   basket.products = []
 }
+
+const deleteItem = (id: number) => {
+  const indexOfItem = basket.products.findIndex((basketItem) => basketItem.product.id === id);
+  if (indexOfItem !== -1) {
+    basket.products = basket.products.filter((basketItem) => basketItem.product.id !== id);
+  } else {
+    console.warn(`Item with id ${id} not found in the basket.`);
+  }
+
+  console.log(basket.products);
+};
+
 
 const totalPrice = computed(() => {
   return basket.products.reduce((total, basketItem) => {
