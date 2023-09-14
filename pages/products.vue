@@ -96,6 +96,7 @@
         <ModalProducts
             class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 sm:max-w-[587px] w-[70%] sm:w-full modal-content"
             @close="toggleModal"
+            @submitted="submitted"
             :show="showModal"
             :object="currect_object"
         />
@@ -111,6 +112,7 @@
         </select>
       </div>
     </div>
+    <ButtonVButton @click="tryToast">toast</ButtonVButton>
   </div>
 </template>
 
@@ -120,9 +122,11 @@ import {onMounted, ref, reactive, watch, computed} from 'vue';
 import {useRoute} from "vue-router";
 import {useRouter} from "vue-router";
 import Table from '@/components/CTable.vue'
+import {useToast} from "vue-toastification";
 
 const route = useRoute()
 const router = useRouter()
+const toast = useToast()
 
 const showModal = ref(false)
 const loading = ref(false)
@@ -149,6 +153,16 @@ function onClickOutside(event) {
 const toggleModal = (object) => {
   currect_object.value = object
   showModal.value = !showModal.value
+}
+
+const submitted = () => {
+  toggleModal()
+}
+
+const tryToast = () => {
+  console.log("Toast here")
+  toast.success("I'm a toast!");
+  console.log("TOAST END")
 }
 
 const fetchData = async () => {

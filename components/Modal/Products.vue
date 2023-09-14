@@ -64,6 +64,7 @@ import {useVuelidate} from '@vuelidate/core'
 import {required} from '@vuelidate/validators'
 import {reactive, ref} from 'vue'
 
+
 const props = defineProps<Props>()
 
 interface Props {
@@ -97,7 +98,8 @@ const rules = {
 
 
 const $v = useVuelidate<IContactForm>(rules, form)
-const emit = defineEmits(['open', 'close'])
+const emit = defineEmits(['open', 'close', 'submitted'])
+
 const submitForm = async () => {
   $v.value.$touch()
   if ($v.value.$invalid) {
@@ -114,6 +116,7 @@ const submitForm = async () => {
     console.log(response)
     props.object.value = response
   }
+  emit("submitted")
 }
 
 

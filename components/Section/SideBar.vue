@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-700 h-[100vh] w-1/20" :class="{'!w-1/5 !p-5': sidebar}">
+  <div class="bg-gray-700  w-1/20" :class="{'!w-1/5 !p-5': sidebar}">
     <div class="" v-if="sidebar">
       <div class="mb-10 flex justify-between">
         <img src="/logo.svg" alt="logo" class="w-[150px]">
