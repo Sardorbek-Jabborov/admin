@@ -63,7 +63,7 @@
           <td class="!w-max">{{ object?.stock_quantity }}</td>
 
           <td>
-            <button class="text-xl text-primary" @click="toggleModal(object)">
+            <button class="text-xl text-primary" @click="toggleModal({})">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_40_3970)">
                   <path
@@ -98,7 +98,7 @@
             @close="toggleModal"
             @submitted="submitted"
             :show="showModal"
-            :object="currect_object"
+            :object="currentObject"
         />
       </div>
     </Transition>
@@ -112,7 +112,6 @@
         </select>
       </div>
     </div>
-    <ButtonVButton @click="tryToast">toast</ButtonVButton>
   </div>
 </template>
 
@@ -139,30 +138,24 @@ const objects = reactive({
   data: [],
   total: 0,
 });
-const currect_object = ref({})
+const currentObject = ref({})
 
 function onClickOutside(event) {
   const modalContent = document.querySelector('.modal-content');
   if (modalContent && !modalContent.contains(event.target)) {
     document.body.style.overflow = 'auto';
     showModal.value = false;
-    currect_object.value = {}
+    currentObject.value = {}
   }
 }
 
 const toggleModal = (object) => {
-  currect_object.value = object
+  currentObject.value = object
   showModal.value = !showModal.value
 }
 
 const submitted = () => {
   toggleModal()
-}
-
-const tryToast = () => {
-  console.log("Toast here")
-  toast.success("I'm a toast!");
-  console.log("TOAST END")
 }
 
 const fetchData = async () => {

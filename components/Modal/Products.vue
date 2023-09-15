@@ -42,14 +42,17 @@
         </ClientOnly>
       </div>
       <div class="mt-3 flex justify-end">
-        <ButtonVButton class="flex gap-2 group" >
+        <ButtonVButton class="flex gap-2 group">
           <div>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                   d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z"
-                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
-              <path d="M17 21V13H7V21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
-              <path d="M7 3V8H15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
+                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
+              <path d="M17 21V13H7V21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
+              <path d="M7 3V8H15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
             </svg>
           </div>
           Saqlash
@@ -63,9 +66,11 @@ import {useApi} from "@/helpers/axios";
 import {useVuelidate} from '@vuelidate/core'
 import {required} from '@vuelidate/validators'
 import {reactive, ref} from 'vue'
+import {useProductStore} from "~/store/product";
 
 
 const props = defineProps<Props>()
+const store = useProductStore()
 
 interface Props {
   show: boolean
@@ -105,16 +110,12 @@ const submitForm = async () => {
   if ($v.value.$invalid) {
     console.log($v.value.$error)
   } else {
-    const url = props.object?.id ? `/products/${props.object.id}/` : '/products/'
     const method = props.object?.id ? 'put' : 'post'
-    const data = {
-      title: form.title,
-      price: form.price,
-      count_in_box: form.count_in_box,
+    if (method == 'post') {
+      store.addProduct(form)
+    } else {
+      store.editProduct(form)
     }
-    const response = await useApi[method](url, data)
-    console.log(response)
-    props.object.value = response
   }
   emit("submitted")
 }
