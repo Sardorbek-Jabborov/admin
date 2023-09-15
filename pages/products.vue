@@ -63,7 +63,7 @@
           <td class="!w-max">{{ object?.stock_quantity }}</td>
 
           <td>
-            <button class="text-xl text-primary" @click="toggleModal({})">
+            <button class="text-xl text-primary" @click="toggleModal(object)">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_40_3970)">
                   <path
@@ -156,6 +156,7 @@ const toggleModal = (object) => {
 
 const submitted = () => {
   toggleModal()
+  fetchData()
 }
 
 const fetchData = async () => {

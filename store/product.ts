@@ -12,22 +12,26 @@ export const useProductStore = defineStore('product', () => {
     const productCount = ref<number[]>([])
     const slug = ref<string>('product')
 
-    const addProduct = async (product: any): Promise<void> => {
-        await useApi.post("/products/", {
+    const addProduct = async (product: any, callback: any = null): Promise<void> => {
+        const response = await useApi.post("/products/", {
             title: product.title,
             price: product.price,
             count_in_box: product.count_in_box
         })
         toast.success("Yangi mahsulot qo'shildi")
+        if(callback)
+            callback(response);
     }
 
-    const editProduct = async (product: any) => {
-        await useApi.put("/products/", {
+    const editProduct = async (product: any, id: Number, callback: any = null) => {
+        const response = await useApi.put(`/products/${id}/`, {
             title: product.title,
             price: product.price,
             count_in_box: product.count_in_box
         })
         toast.info("Mahsulot yangilandi")
+        if(callback)
+            callback(response);
     }
 
     const editStatusProduct = async (product: Product): Promise<void> => {

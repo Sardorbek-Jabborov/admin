@@ -112,12 +112,11 @@ const submitForm = async () => {
   } else {
     const method = props.object?.id ? 'put' : 'post'
     if (method == 'post') {
-      store.addProduct(form)
+      store.addProduct(form, () => emit("submitted"))
     } else {
-      store.editProduct(form)
+      store.editProduct(form, props.object.id, () => emit("submitted"))
     }
   }
-  emit("submitted")
 }
 
 
