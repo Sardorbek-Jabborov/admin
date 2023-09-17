@@ -153,7 +153,7 @@ const search = ref('')
 const selectedConsumer = ref()
 const selectedCourier = ref()
 const paidPrice = ref()
-const fullPaid = ref()
+const fullPaid = ref(false)
 
 const fetchData = async () => {
   // loading.value = true
