@@ -59,12 +59,12 @@
           </td>
           <td class="!text-left " data-primary :title="sponsor?.full_name">
             <span class="line-clamp-2 font-medium text-15p">
-              {{ sponsor?.consumer.fio }}
+              {{ sponsor?.consumer?.fio }}
             </span>
           </td>
-          <td class="!w-max">{{ sponsor?.consumer.phone_number }}</td>
-          <td class="!w-max">{{ sponsor?.courier.fio }}</td>
-          <td class="!w-max">{{ sponsor?.courier.phone_number }}</td>
+          <td class="!w-max">{{ sponsor?.consumer?.phone_number }}</td>
+          <td class="!w-max">{{ sponsor?.courier?.fio }}</td>
+          <td class="!w-max">{{ sponsor?.courier?.phone_number }}</td>
           <td class="!w-max">{{ sponsor?.paid_price }}</td>
           <td class="!w-max">{{ sponsor?.total_price }}</td>
           <td class="!w-max">{{ sponsor?.status }}</td>
