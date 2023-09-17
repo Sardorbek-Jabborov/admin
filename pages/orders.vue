@@ -64,7 +64,7 @@
           </td>
           <td class="!w-max">{{ sponsor?.consumer.phone_number }}</td>
           <td class="!w-max">{{ sponsor?.courier.fio }}</td>
-          <td class="!w-max">{{ sponsor?.courier.phone_number }} uzs</td>
+          <td class="!w-max">{{ sponsor?.courier.phone_number }}</td>
           <td class="!w-max">{{ sponsor?.paid_price }}</td>
           <td class="!w-max">{{ sponsor?.total_price }}</td>
           <td class="!w-max">{{ sponsor?.status }}</td>
