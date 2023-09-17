@@ -105,7 +105,7 @@
           <label for="full_paid">To'liq to'landi?</label>
           <input type="checkbox" name="full_paid" v-model="fullPaid"/>
         </div>
-        <div class="w-auto">
+        <div class="w-auto" v-if="!fullPaid">
           <label for="price_paid">To'langan summa:</label>
           <div class="bg-gray-200 p-3 rounded-md w-auto">
             <input type="number" name="price_paid" class="outline-0 bg-transparent" v-model="paidPrice">
@@ -152,7 +152,7 @@ const products = reactive({
 const search = ref('')
 const selectedConsumer = ref()
 const selectedCourier = ref()
-const paidPrice = ref()
+const paidPrice = ref(0)
 const fullPaid = ref(false)
 
 const fetchData = async () => {

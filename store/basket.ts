@@ -60,8 +60,8 @@ export const useBasketStore = defineStore('basket', () => {
             "courier": courierId,
             "consumer": consumerId,
             "products": products,
-            "full_paid": full_paid,
-            "price_paid": price_paid
+            "full_paid": full_paid || false,
+            "price_paid": price_paid || 0
         }).then(() => {
             basket.products = []
             basket.productId = []
