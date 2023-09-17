@@ -56,6 +56,10 @@ const tabs = [
     url: '/customers'
   },
   {
+    tab: 'Kuryerlar',
+    url: '/couriers'
+  },
+  {
     tab: 'Mahsulotlar',
     url: '/products'
   },

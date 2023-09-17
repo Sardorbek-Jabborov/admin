@@ -1,8 +1,9 @@
 <template>
   <div class="container flex gap-5 py-5">
     <div class="basis-2/3 bg-white rounded-xl p-4">
-      <Input placeholder="Izlash..." type="text"/>
-      <div class="mt-3 flex justify-between border-b last:border-b-0 border-gray-600 pb-1" v-for="product in products.data"
+      <Input placeholder="Izlash..." type="text" @input="fetchData" v-model="search"/>
+      <div class="mt-3 flex justify-between border-b last:border-b-0 border-gray-600 pb-1"
+           v-for="product in products.data"
            :key="product.id">
         <div>
           <p>Nomi: <span class="font-bold">{{ product?.title }}</span></p>
@@ -11,7 +12,7 @@
         </div>
         <div class="flex flex-col gap-2">
           <p>Narxi: <span class="font-bold">{{ product?.price }} UZS</span></p>
-          <ButtonVButton class="py-1" @click="addToBasket(product.id)">
+          <ButtonVButton class="py-1" @click="addToBasket(product)">
             Savatga qo'shish
           </ButtonVButton>
         </div>
@@ -19,8 +20,9 @@
     </div>
     <div class="basis-1/3 bg-white rounded-xl p-4">
       <h3 class="text-2xl text-black-100 font-medium">Savatcha</h3>
-      <div v-if="basket.products.length > 0" class="mt-2">
-        <p>Savatchadagi mahsulotlar soni: <span class="text-lg font-bold">{{ basket?.products?.length }}</span></p>
+      <div v-if="basket.basket.products.length > 0" class="mt-2">
+        <p>Savatchadagi mahsulotlar soni: <span class="text-lg font-bold">{{ basket.basket?.products?.length }}</span>
+        </p>
         <div class="flex items-center gap-2 mt-2">
           <p>Savatchani tozalash</p>
           <button @click="clearBasket">
@@ -49,20 +51,23 @@
         <!-- Item -->
         <div
             class="mt-3 flex justify-between border-b border-gray-600 pb-1"
-            v-for="basketItem in basket.products"
-            :key="basketItem.product.id"
+            v-for="basketItem in basket.basket.products"
+            :key="basketItem?.id"
         >
           <div class="w-full">
-            <p>Nomi: <span class="font-bold">{{ basketItem.product.name }}</span></p>
-            <p>Qutidagi miqdori: <span class="font-bold">{{ basketItem.product.amount }} dona</span></p>
-            <p>Narxi: <span class="font-bold">{{ basketItem.product.price }} UZS</span></p>
+            <p>Nomi: <span class="font-bold">{{ basketItem?.product.title }}</span></p>
+              <p>Qutidagi miqdori: <span class="font-bold">{{ basketItem?.product.count_in_box }} dona</span></p>
+            <p>Narxi: <span class="font-bold">{{ basketItem?.product.price }} UZS</span></p>
             <p>Savatdagi miqdori: <span class="font-bold">{{ basketItem?.quantity }} dona</span></p>
             <div class="flex items-center gap-5 p-2 w-auto">
               <div class="rounded-lg border border-gray-700 flex gap-2 w-auto">
-                <button @click="basketItem.quantity > 1 ? basketItem.quantity-- : null" class="px-4 py-2 bg-gray-200 rounded-l-lg border-r border-gray-700">-
+                <button @click="basketItem.quantity > 1 ? basketItem.quantity-- : null"
+                        class="px-4 py-2 bg-gray-200 rounded-l-lg border-r border-gray-700">-
                 </button>
-                <input type="number" v-model="basketItem.quantity" @input="updateQuantity(basketItem)" class="outline-0" min="0" onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';">
-                <button @click="basketItem.quantity++" class="px-4 py-2 bg-gray-200 rounded-r-lg border-l border-gray-700">+
+                <input type="number" v-model="basketItem.quantity" @input="updateQuantity(basketItem)" class="outline-0 max-w-[150px]"
+                       min="0" onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';">
+                <button @click="basketItem.quantity++"
+                        class="px-4 py-2 bg-gray-200 rounded-r-lg border-l border-gray-700">+
                 </button>
               </div>
               <button @click="deleteItem(basketItem.product.id)">
@@ -81,33 +86,31 @@
         <div class="py-2 border-b border-gray-700">
           Umumiy narxi: {{ totalPrice }} UZS
         </div>
+        <div class="flex flex-col gap-2">
+          <label for="customers">Mijoz:</label>
+          <select name="customers" class="border border-gray-600 rounded- md p-2">
+            <option disabled selected value>Tanlang:</option>
+            <option v-for="consumer in consumers.data" :value="consumer.id">{{ consumer.fio }}</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="customers">Kuryer:</label>
+          <select name="customers" class="border border-gray-600 rounded- md p-2">
+            <option disabled selected value>Tanlang:</option>
+            <option v-for="courier in couriers.data" :value="courier.id">{{ courier.fio }}</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-2 mt-5">
+          <ButtonVButton class="py-1">
+            Buyurtma yaratish
+          </ButtonVButton>
+          <ButtonVButton class="py-1">
+            Check
+          </ButtonVButton>
+        </div>
       </div>
       <div v-else>
         <p>Savatchada hech narsa yo'q.</p>
-      </div>
-      <div class="flex flex-col gap-2">
-        <label for="customers">Mijoz:</label>
-        <select name="customers" class="border border-gray-600 rounded- md p-2">
-          <option disabled selected value>Tanlang:</option>
-          <option v-for="consumer in consumers.data" :value="consumer.id">{{ consumer.fio }}</option>
-        </select>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label for="customers">Kuryer:</label>
-        <select name="customers" class="border border-gray-600 rounded- md p-2">
-          <option disabled selected value>Tanlang:</option>
-          <option v-for="courier in couriers.data" :value="courier.id">{{ courier.fio }}</option>
-        </select>
-      </div>
-
-      <div class="flex flex-col gap-2 mt-5">
-        <ButtonVButton class="py-1">
-          Buyurtma yaratish
-        </ButtonVButton>
-        <ButtonVButton class="py-1">
-          Check
-        </ButtonVButton>
       </div>
     </div>
   </div>
@@ -120,19 +123,22 @@ import {useRoute} from "vue-router";
 import {useRouter} from "vue-router";
 import Table from '@/components/CTable.vue'
 import {useProductStore} from "~/store/product";
+import {useBasketStore} from "~/store/basket";
 import {useToast} from "vue-toastification";
 
 const store = useProductStore()
+const basket = useBasketStore()
 const toast = useToast()
 
 const products = reactive({
   "data": []
 })
+const search = ref('')
 
 const fetchData = async () => {
   // loading.value = true
   try {
-    const response = await store.getProductAll('', 1, 5)
+    const response = await store.getProductAll(search.value, 1, 5)
     products.data = response.results;
     console.log(products.data)
   } catch (error) {
@@ -152,10 +158,6 @@ const updateQuantity = (item: any) => {
   item.quantity = newValue.toString(); // Convert back to string for input field
 };
 
-const basket = reactive({
-      "products": [],
-    }
-)
 
 const consumers = reactive({"data": []})
 
@@ -184,35 +186,33 @@ const clearBasket = () => {
 }
 
 const deleteItem = (id: number) => {
-  const indexOfItem = basket.products.findIndex((basketItem) => basketItem.product.id === id);
-  if (indexOfItem !== -1) {
-    basket.products = basket.products.filter((basketItem) => basketItem.product.id !== id);
-  } else {
-    console.warn(`Item with id ${id} not found in the basket.`);
-  }
-
-  console.log(basket.products);
+  basket.removeItem(id)
 };
 
 
 const totalPrice = computed(() => {
-  return basket.products.reduce((total, basketItem) => {
+  return basket.basket.products.reduce((total, basketItem) => {
     return total + (basketItem.product.price * basketItem.quantity);
   }, 0);
 });
 
-const addToBasket = (id: number) => {
-  const item = products.data.find((el) => el.id == id);
-  const existingItem = basket.products.find((basketItem) => basketItem.product.id === id);
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    basket.products.push({
-      "product": item,
-      "quantity": 1,
-    });
-  }
-  console.log(basket.products);
+// const addToBasket = (id: number) => {
+//   const item = products.data.find((el) => el.id == id);
+//   const existingItem = basket.products.find((basketItem) => basketItem.product.id === id);
+//   if (existingItem) {
+//     existingItem.quantity += 1;
+//   } else {
+//     basket.products.push({
+//       "product": item,
+//       "quantity": 1,
+//     });
+//   }
+//   console.log(basket.products);
+// };
+const addToBasket = (item) => {
+  basket.addToBasket(item);
+  console.log(basket.basket)
+  console.log(basket.basket.products)
 };
 </script>
 
