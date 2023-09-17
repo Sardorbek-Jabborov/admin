@@ -69,22 +69,16 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue';
 import {useRouter} from "vue-router";
-// import {useAuthStore} from '@/stores';
 import {useApi} from '@/helpers/axios';
 import {getItem, setItem} from "@/service/localstorage";
+import {useUserStore} from "~/store/user";
+// import {useAuthStore} from '@/stores';
 // const store = useAuthStore();
-let recaptchaToken = ref();
 
 const router = useRouter()
+const user = useUserStore()
 
 
-definePageMeta({
-  layout: "auth",
-});
-
-function verify(event: any) {
-  recaptchaToken.value = event;
-}
 
 const inputPass = ref();
 const loading = ref(false);
@@ -98,7 +92,7 @@ const error = reactive({
 
 
 async function loginn() {
-
+  setItem('username', login.value)
   console.log(login.value)
   console.log(password.value)
   try {
@@ -107,7 +101,7 @@ async function loginn() {
       password: password.value
     });
     setItem('access', response.access)
-    router.push('/')
+    router.push('/customers')
   } catch (error) {
     console.error('Error fetching sponsors:', error);
   }
@@ -151,6 +145,10 @@ function togglePassword() {
     inputPass.value.type = changer[inputType];
   }
 }
+
+definePageMeta({
+  layout: "auth",
+});
 </script>
 
 <style scoped>

@@ -1,6 +1,5 @@
-import axios from 'axios'
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import {defineStore} from 'pinia'
+import {ref} from 'vue'
 import {useToast} from "vue-toastification";
 import {useApi} from "~/helpers/axios";
 
@@ -19,7 +18,7 @@ export const useProductStore = defineStore('product', () => {
             count_in_box: product.count_in_box
         })
         toast.success("Yangi mahsulot qo'shildi")
-        if(callback)
+        if (callback)
             callback(response);
     }
 
@@ -30,11 +29,11 @@ export const useProductStore = defineStore('product', () => {
             count_in_box: product.count_in_box
         })
         toast.info("Mahsulot yangilandi")
-        if(callback)
+        if (callback)
             callback(response);
     }
 
-    const editStatusProduct = async (product: Product): Promise<void> => {
+    const editStatusProduct = async (product: any): Promise<void> => {
 
         toast.success("Turkum xarakteristikasi o'zgartirildi")
     }
@@ -43,8 +42,9 @@ export const useProductStore = defineStore('product', () => {
 
     }
 
-    const getProductAll = async (): Promise<void> => {
-
+    const getProductAll = async (search: string, currentPage: number, pageSize: number, ) => {
+        const response = await useApi.get(`/products/?search=${search}&page=${currentPage}&page_size=${pageSize}`);
+        return response
     }
 
     const removeProduct = async (id: number): Promise<void> => {

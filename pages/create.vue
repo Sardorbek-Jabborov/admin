@@ -2,15 +2,15 @@
   <div class="container flex gap-5 py-5">
     <div class="basis-2/3 bg-white rounded-xl p-4">
       <Input placeholder="Izlash..." type="text"/>
-      <div class="mt-3 flex justify-between border-b last:border-b-0 border-gray-600 pb-1" v-for="product in products"
+      <div class="mt-3 flex justify-between border-b last:border-b-0 border-gray-600 pb-1" v-for="product in products.data"
            :key="product.id">
         <div>
-          <p>Nomi: <span class="font-bold">{{ product.name }}</span></p>
-          <p>Qutidagi miqdori: <span class="font-bold">{{ product.amount }} dona</span></p>
-          <p>Skladdagi soni: <span class="font-bold">{{ product.perbox }} dona</span></p>
+          <p>Nomi: <span class="font-bold">{{ product?.title }}</span></p>
+          <p>Qutidagi miqdori: <span class="font-bold">{{ product?.count_in_box }} dona</span></p>
+          <p>Skladdagi soni: <span class="font-bold">{{ product?.stock_quantity }} dona</span></p>
         </div>
         <div class="flex flex-col gap-2">
-          <p>Narxi: <span class="font-bold">{{ product.price }} UZS</span></p>
+          <p>Narxi: <span class="font-bold">{{ product?.price }} UZS</span></p>
           <ButtonVButton class="py-1" @click="addToBasket(product.id)">
             Savatga qo'shish
           </ButtonVButton>
@@ -56,12 +56,12 @@
             <p>Nomi: <span class="font-bold">{{ basketItem.product.name }}</span></p>
             <p>Qutidagi miqdori: <span class="font-bold">{{ basketItem.product.amount }} dona</span></p>
             <p>Narxi: <span class="font-bold">{{ basketItem.product.price }} UZS</span></p>
-            <p>Savatdagi miqdori: <span class="font-bold">{{ basketItem.quantity }} dona</span></p>
+            <p>Savatdagi miqdori: <span class="font-bold">{{ basketItem?.quantity }} dona</span></p>
             <div class="flex items-center gap-5 p-2 w-auto">
               <div class="rounded-lg border border-gray-700 flex gap-2 w-auto">
-                <button @click="basketItem.quantity--" class="px-4 py-2 bg-gray-200 rounded-l-lg border-r border-gray-700">-
+                <button @click="basketItem.quantity > 1 ? basketItem.quantity-- : null" class="px-4 py-2 bg-gray-200 rounded-l-lg border-r border-gray-700">-
                 </button>
-                <input type="number" v-model="basketItem.quantity" class="outline-0" min="0" onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';">
+                <input type="number" v-model="basketItem.quantity" @input="updateQuantity(basketItem)" class="outline-0" min="0" onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';">
                 <button @click="basketItem.quantity++" class="px-4 py-2 bg-gray-200 rounded-r-lg border-l border-gray-700">+
                 </button>
               </div>
@@ -119,44 +119,38 @@ import {onMounted, ref, reactive, watch, computed} from 'vue';
 import {useRoute} from "vue-router";
 import {useRouter} from "vue-router";
 import Table from '@/components/CTable.vue'
+import {useProductStore} from "~/store/product";
+import {useToast} from "vue-toastification";
 
-const products = [
-  {
-    id: 1,
-    name: "Tovar 1",
-    perbox: 15,
-    amount: 4565,
-    price: 15999,
-  },
-  {
-    id: 2,
-    name: "Tovar 2",
-    perbox: 23,
-    amount: 156,
-    price: 6500,
-  },
-  {
-    id: 3,
-    name: "Tovar 3",
-    perbox: 8,
-    amount: 48562,
-    price: 84561,
-  },
-  {
-    id: 4,
-    name: "Tovar 4",
-    perbox: 456,
-    amount: 564,
-    price: 156166,
-  },
-  {
-    id: 5,
-    name: "Tovar 5",
-    perbox: 23,
-    amount: 98465,
-    price: 87777,
+const store = useProductStore()
+const toast = useToast()
+
+const products = reactive({
+  "data": []
+})
+
+const fetchData = async () => {
+  // loading.value = true
+  try {
+    const response = await store.getProductAll('', 1, 5)
+    products.data = response.results;
+    console.log(products.data)
+  } catch (error) {
+    toast.error("Error fetching objects")
+    console.error('Error fetching objects:', error);
+  } finally {
+    // loading.value = false
   }
-]
+}
+onMounted(() => {
+  fetchData()
+})
+
+const updateQuantity = (item: any) => {
+  let newValue = parseInt(item.quantity, 10) || 0;
+  newValue = Math.max(0, newValue); // Ensure it doesn't go below 1
+  item.quantity = newValue.toString(); // Convert back to string for input field
+};
 
 const basket = reactive({
       "products": [],
@@ -208,7 +202,7 @@ const totalPrice = computed(() => {
 });
 
 const addToBasket = (id: number) => {
-  const item = products.find((el) => el.id == id);
+  const item = products.data.find((el) => el.id == id);
   const existingItem = basket.products.find((basketItem) => basketItem.product.id === id);
   if (existingItem) {
     existingItem.quantity += 1;

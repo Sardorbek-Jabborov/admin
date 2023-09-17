@@ -121,11 +121,13 @@ import {onMounted, ref, reactive, watch, computed} from 'vue';
 import {useRoute} from "vue-router";
 import {useRouter} from "vue-router";
 import Table from '@/components/CTable.vue'
-import {useToast} from "vue-toastification";
+import {useToast} from "vue-toastification"
+import {useProductStore} from "~/store/product";
 
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
+const store = useProductStore()
 
 const showModal = ref(false)
 const loading = ref(false)
@@ -162,12 +164,11 @@ const submitted = () => {
 const fetchData = async () => {
   loading.value = true
   try {
-    const response = await useApi.get(`/products/?search=${search.value}&page=${currentPage.value}&page_size=${pageSize.value}`);
-    console.log(response.results)
+    const response = await store.getProductAll(search.value, currentPage.value, pageSize.value)
     objects.data = response.results;
     objects.total = response.count;
-    console.log(objects.data)
   } catch (error) {
+    toast.error("Error fetching objects")
     console.error('Error fetching objects:', error);
   } finally {
     loading.value = false
