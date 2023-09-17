@@ -99,18 +99,23 @@
             class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 sm:max-w-[587px] w-[70%] sm:w-full modal-content"
             @close="toggleModal"
             :show="showModal"
-            :consumer="currect_consumer"
+            :consumer="current_consumer"
         />
       </div>
     </Transition>
     <div class="" v-if="!loading">
-      <div class="page-size flex items-center">
-        <label for="pageSize">Ko‘rsatish:</label>
-        <select v-model="pageSize" id="pageSize" @change="updatePageSize" class="rounded-xl border">
-          <option v-for="option in pageSizeOptions" :key="option" :value="option">
-            {{ option }}
-          </option>
-        </select>
+      <div class="page-size flex items-center justify-between">
+        <div>
+          <label for="pageSize">Ko‘rsatish:</label>
+          <select v-model="pageSize" id="pageSize" @change="updatePageSize" class="rounded-xl border">
+            <option v-for="option in pageSizeOptions" :key="option" :value="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <UIPagination :total-pages="sponsors.total"/>
+        </div>
       </div>
     </div>
   </div>
@@ -137,19 +142,19 @@ const sponsors = reactive({
   data: [],
   total: 0,
 });
-const currect_consumer = ref({})
+const current_consumer = ref({})
 
 function onClickOutside(event) {
   const modalContent = document.querySelector('.modal-content');
   if (modalContent && !modalContent.contains(event.target)) {
     document.body.style.overflow = 'auto';
     showModal.value = false;
-    currect_consumer.value = {}
+    current_consumer.value = {}
   }
 }
 
 const toggleModal = (sponsor) => {
-  currect_consumer.value = sponsor
+  current_consumer.value = sponsor
   showModal.value = !showModal.value
 }
 
