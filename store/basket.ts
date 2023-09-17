@@ -33,9 +33,25 @@ export const useBasketStore = defineStore('basket', () => {
         console.log(basket.products);
     };
 
+    const createOrder = (courierId: any, consumerId: any, products: any, full_paid: boolean, price_paid: any) => {
+        useApi.post('/orders', {
+            "courier": courierId,
+            "consumer": consumerId,
+            "products": products,
+            "full_paid": full_paid,
+            "price_paid": price_paid
+        }).then(() => {
+            toast.success("Buyurtma yaratildi!")
+        })
+            .catch(() => {
+                toast.error("Buyurtma yaratishda xatolik yuz berdi!")
+            })
+    }
+
     return {
         basket,
         addToBasket,
-        removeItem
+        removeItem,
+        createOrder
     };
 });

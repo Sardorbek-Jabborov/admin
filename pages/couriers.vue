@@ -45,8 +45,6 @@
         <td class="w-1/4 !text-left">F.I.Sh.</td>
         <td>Tel. raqam</td>
         <td>Tel. raqam 2</td>
-        <td>Qarz</td>
-        <td>Yaratilgan sana</td>
         <td>Amallar</td>
       </template>
       <template #tbody v-if="!loading">
@@ -61,9 +59,6 @@
           </td>
           <td class="!w-max">{{ sponsor?.phone_number }}</td>
           <td class="!w-max">{{ sponsor?.phone_number2 }}</td>
-          <td class="!w-max">{{ sponsor?.depts }} uzs</td>
-          <td class="!w-max">{{ sponsor?.created_at }}</td>
-
           <td>
             <button class="text-xl text-primary" @click="toggleModal(sponsor)">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -56,7 +56,7 @@
         >
           <div class="w-full">
             <p>Nomi: <span class="font-bold">{{ basketItem?.product.title }}</span></p>
-              <p>Qutidagi miqdori: <span class="font-bold">{{ basketItem?.product.count_in_box }} dona</span></p>
+            <p>Qutidagi miqdori: <span class="font-bold">{{ basketItem?.product.count_in_box }} dona</span></p>
             <p>Narxi: <span class="font-bold">{{ basketItem?.product.price }} UZS</span></p>
             <p>Savatdagi miqdori: <span class="font-bold">{{ basketItem?.quantity }} dona</span></p>
             <div class="flex items-center gap-5 p-2 w-auto">
@@ -64,7 +64,8 @@
                 <button @click="basketItem.quantity > 1 ? basketItem.quantity-- : null"
                         class="px-4 py-2 bg-gray-200 rounded-l-lg border-r border-gray-700">-
                 </button>
-                <input type="number" v-model="basketItem.quantity" @input="updateQuantity(basketItem)" class="outline-0 max-w-[150px]"
+                <input type="number" v-model="basketItem.quantity" @input="updateQuantity(basketItem)"
+                       class="outline-0 max-w-[150px]"
                        min="0" onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';">
                 <button @click="basketItem.quantity++"
                         class="px-4 py-2 bg-gray-200 rounded-r-lg border-l border-gray-700">+
@@ -88,20 +89,31 @@
         </div>
         <div class="flex flex-col gap-2">
           <label for="customers">Mijoz:</label>
-          <select name="customers" class="border border-gray-600 rounded- md p-2">
+          <select name="customers" class="border border-gray-600 rounded- md p-2" v-model="selectedConsumer">
             <option disabled selected value>Tanlang:</option>
-            <option v-for="consumer in consumers.data" :value="consumer.id">{{ consumer.fio }}</option>
+            <option v-for="consumer in consumers.data" :value="consumer.id">{{ consumer?.fio }}</option>
           </select>
         </div>
         <div class="flex flex-col gap-2">
-          <label for="customers">Kuryer:</label>
-          <select name="customers" class="border border-gray-600 rounded- md p-2">
+          <label for="couriers">Kuryer:</label>
+          <select name="couriers" class="border border-gray-600 rounded- md p-2" v-model="selectedCourier">
             <option disabled selected value>Tanlang:</option>
-            <option v-for="courier in couriers.data" :value="courier.id">{{ courier.fio }}</option>
+            <option v-for="courier in couriers.data" :value="courier.id">{{ courier?.fio }}</option>
           </select>
         </div>
+        <div class="flex gap-3 mt-5">
+          <label for="full_paid">To'liq to'landi?</label>
+          <input type="checkbox" name="full_paid" v-model="fullPaid"/>
+        </div>
+        <div class="w-auto">
+          <label for="price_paid">To'langan summa:</label>
+          <div class="bg-gray-200 p-3 rounded-md w-auto">
+            <input type="number" name="price_paid" class="outline-0 bg-transparent" v-model="paidPrice">
+            <span>UZS</span>
+          </div>
+        </div>
         <div class="flex flex-col gap-2 mt-5">
-          <ButtonVButton class="py-1">
+          <ButtonVButton class="py-1" @click="createOrder">
             Buyurtma yaratish
           </ButtonVButton>
           <ButtonVButton class="py-1">
@@ -130,10 +142,18 @@ const store = useProductStore()
 const basket = useBasketStore()
 const toast = useToast()
 
+const consumers = reactive({"data": []})
+
+const couriers = reactive({"data": []})
+
 const products = reactive({
   "data": []
 })
 const search = ref('')
+const selectedConsumer = ref()
+const selectedCourier = ref()
+const paidPrice = ref()
+const fullPaid = ref()
 
 const fetchData = async () => {
   // loading.value = true
@@ -158,10 +178,16 @@ const updateQuantity = (item: any) => {
   item.quantity = newValue.toString(); // Convert back to string for input field
 };
 
-
-const consumers = reactive({"data": []})
-
-const couriers = reactive({"data": []})
+const createOrder = () => {
+  basket.createOrder(selectedCourier.value, selectedConsumer.value, basket.basket.products, fullPaid.value, paidPrice.value)
+  console.log({
+    "courier": selectedCourier.value,
+    "consumer": selectedConsumer.value,
+    "products": basket.basket.products,
+    "full_paid": fullPaid.value,
+    "price_paid": paidPrice.value
+  })
+}
 
 async function load_page() {
   try {
@@ -182,7 +208,7 @@ async function load_page() {
 onMounted(load_page)
 
 const clearBasket = () => {
-  basket.products = []
+  basket.basket.products = []
 }
 
 const deleteItem = (id: number) => {
