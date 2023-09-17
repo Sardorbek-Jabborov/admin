@@ -179,11 +179,11 @@ const updateQuantity = (item: any) => {
 };
 
 const createOrder = () => {
-  basket.createOrder(selectedCourier.value, selectedConsumer.value, basket.basket.products, fullPaid.value, paidPrice.value)
+  basket.createOrder(selectedCourier.value, selectedConsumer.value, basket.basket.productId, fullPaid.value, paidPrice.value)
   console.log({
     "courier": selectedCourier.value,
     "consumer": selectedConsumer.value,
-    "products": basket.basket.products,
+    "products": basket.basket.productId,
     "full_paid": fullPaid.value,
     "price_paid": paidPrice.value
   })

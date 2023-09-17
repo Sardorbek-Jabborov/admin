@@ -8,14 +8,19 @@ const toast = useToast()
 export const useBasketStore = defineStore('basket', () => {
     const basket = reactive({
         products: [],
+        productId: [],
     });
 
-    const addToBasket = (item) => {
+    const addToBasket = (item: { id: any; }) => {
+        onlyByID(item)
         console.log(item);
+        // @ts-ignore
         const existingItem = basket.products.find((basketItem) => basketItem.product.id === item.id);
         if (existingItem) {
+            // @ts-ignore
             existingItem.quantity += 1;
         } else {
+            // @ts-ignore
             basket.products.push({
                 product: item,
                 quantity: 1,
@@ -23,9 +28,26 @@ export const useBasketStore = defineStore('basket', () => {
         }
     };
 
+    const onlyByID = (item: { id: any; }) => {
+        // @ts-ignore
+        const existingItem = basket.productId.find((basketItem) => basketItem.product.id === item.id);
+        if (existingItem) {
+            // @ts-ignore
+            existingItem.quantity += 1;
+        } else {
+            // @ts-ignore
+            basket.productId.push({
+                product: item?.id,
+                quantity: 1,
+            });
+        }
+    }
+
     const removeItem = (id: number) => {
+        // @ts-ignore
         const indexOfItem = basket.products.findIndex((basketItem) => basketItem.product.id === id);
         if (indexOfItem !== -1) {
+            // @ts-ignore
             basket.products = basket.products.filter((basketItem) => basketItem.product.id !== id);
         } else {
             console.warn(`Item with id ${id} not found in the basket.`);
@@ -34,13 +56,15 @@ export const useBasketStore = defineStore('basket', () => {
     };
 
     const createOrder = (courierId: any, consumerId: any, products: any, full_paid: boolean, price_paid: any) => {
-        useApi.post('/orders', {
+        useApi.post('/orders/', {
             "courier": courierId,
             "consumer": consumerId,
             "products": products,
             "full_paid": full_paid,
             "price_paid": price_paid
         }).then(() => {
+            basket.products = []
+            basket.productId = []
             toast.success("Buyurtma yaratildi!")
         })
             .catch(() => {
