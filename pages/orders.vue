@@ -6,35 +6,12 @@
       <div class="mt-5 flex justify-between">
         <div
             class="inline-flex gap-2 items-center bg-white py-2 px-3 rounded-xl border focus-within:border-gray-800 transition-all duration-300 ease-in-out">
-          <div>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g clip-path="url(#clip0_120_539)">
-                <path
-                    d="M8.33333 14.1667C11.555 14.1667 14.1667 11.555 14.1667 8.33333C14.1667 5.11167 11.555 2.5 8.33333 2.5C5.11167 2.5 2.5 5.11167 2.5 8.33333C2.5 11.555 5.11167 14.1667 8.33333 14.1667Z"
-                    stroke="#B1B1B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M17.5 17.5L12.5 12.5" stroke="#B1B1B8" stroke-width="2" stroke-linecap="round"
-                      stroke-linejoin="round"/>
-              </g>
-              <defs>
-                <clipPath id="clip0_120_539">
-                  <rect width="20" height="20" fill="white"/>
-                </clipPath>
-              </defs>
-            </svg>
-          </div>
+          <IconsSearch class="w-5 h-5 text-[#B1B1B8]"/>
           <input type="text" class="bg-transparent outline-0" placeholder="Izlash..." @keyup="fetchData"
                  v-model="search">
         </div>
-        <ButtonVButton class="flex group" @click="router.push('/create')">
-          <div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19.9999 11.9999H4.00007" stroke="white" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
-              <path d="M12 4V19.9999" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
-            </svg>
-          </div>
+        <ButtonVButton class="flex group gap-2" @click="router.push('/create')">
+          <IconsPlus class="w-6 h-6 text-white group-hover:text-blue-300 duration-300"/>
           <span>Yaratish</span>
         </ButtonVButton>
       </div>
@@ -53,7 +30,7 @@
       </template>
       <template #tbody v-if="!loading">
         <tr v-for="(sponsor, index) in sponsors.data" :key="index">
-<!--          <pre>{{sponsor}}</pre>-->
+          <!--          <pre>{{sponsor}}</pre>-->
           <td class="px-6" scope="row">
             {{ calculateOrder(index) }}
           </td>

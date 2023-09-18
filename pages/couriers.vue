@@ -7,34 +7,13 @@
         <div
             class="inline-flex gap-2 items-center bg-white py-2 px-3 rounded-xl border focus-within:border-gray-800 transition-all duration-300 ease-in-out">
           <div>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g clip-path="url(#clip0_120_539)">
-                <path
-                    d="M8.33333 14.1667C11.555 14.1667 14.1667 11.555 14.1667 8.33333C14.1667 5.11167 11.555 2.5 8.33333 2.5C5.11167 2.5 2.5 5.11167 2.5 8.33333C2.5 11.555 5.11167 14.1667 8.33333 14.1667Z"
-                    stroke="#B1B1B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M17.5 17.5L12.5 12.5" stroke="#B1B1B8" stroke-width="2" stroke-linecap="round"
-                      stroke-linejoin="round"/>
-              </g>
-              <defs>
-                <clipPath id="clip0_120_539">
-                  <rect width="20" height="20" fill="white"/>
-                </clipPath>
-              </defs>
-            </svg>
+            <IconsSearch class="w-5 h-5 text-[#B1B1B8]"/>
           </div>
           <input type="text" class="bg-transparent outline-0" placeholder="Izlash..." @keyup="fetchData"
                  v-model="search">
         </div>
-        <ButtonVButton class="flex group" @click="toggleModal({})">
-          <div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19.9999 11.9999H4.00007" stroke="white" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
-              <path d="M12 4V19.9999" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="group-hover:stroke-blue-300 transition-all duration-300 ease-in-out"/>
-            </svg>
-          </div>
+        <ButtonVButton class="flex group gap-2" @click="toggleModal({})">
+            <IconsPlus class="w-6 h-6 text-white group-hover:text-blue-300 duration-300"/>
           <span>Qo'shish</span>
         </ButtonVButton>
       </div>
@@ -61,23 +40,7 @@
           <td class="!w-max">{{ sponsor?.phone_number2 }}</td>
           <td>
             <button class="text-xl text-primary" @click="toggleModal(sponsor)">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_40_3970)">
-                  <path
-                      d="M9 7H6C5.46957 7 4.96086 7.21071 4.58579 7.58579C4.21071 7.96086 4 8.46957 4 9V18C4 18.5304 4.21071 19.0391 4.58579 19.4142C4.96086 19.7893 5.46957 20 6 20H15C15.5304 20 16.0391 19.7893 16.4142 19.4142C16.7893 19.0391 17 18.5304 17 18V15"
-                      stroke="#3365FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path
-                      d="M9 15H12L20.5 6.5C20.8978 6.10217 21.1213 5.56261 21.1213 5C21.1213 4.43739 20.8978 3.89782 20.5 3.5C20.1022 3.10217 19.5626 2.87868 19 2.87868C18.4374 2.87868 17.8978 3.10217 17.5 3.5L9 12V15Z"
-                      stroke="#3365FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M16 5L19 8" stroke="#3365FC" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"/>
-                </g>
-                <defs>
-                  <clipPath id="clip0_40_3970">
-                    <rect width="24" height="24" fill="white"/>
-                  </clipPath>
-                </defs>
-              </svg>
+              <IconsEdit class="w-6 h-6 text-[#3365FC] hover:text-black-100 duration-300"/>
             </button>
           </td>
         </tr>
