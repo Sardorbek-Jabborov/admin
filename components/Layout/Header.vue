@@ -12,8 +12,10 @@
 import {useRouter} from "vue-router";
 import {getItem ,removeItem} from "@/service/localstorage";
 import {useUserStore} from "~/store/user";
+import {useToast} from "vue-toastification";
 
 const user = useUserStore()
+const toast = useToast()
 
 const username = getItem('username')
 console.log(username)
@@ -23,6 +25,7 @@ const logOut = () => {
   removeItem('username')
   removeItem('access')
   router.push('/login')
+  toast.info("Akkauntdan chiqdingiz!")
 }
 
 </script>

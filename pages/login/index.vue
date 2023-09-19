@@ -72,12 +72,13 @@ import {useRouter} from "vue-router";
 import {useApi} from '@/helpers/axios';
 import {getItem, setItem} from "@/service/localstorage";
 import {useUserStore} from "~/store/user";
+import {useToast} from "vue-toastification";
 // import {useAuthStore} from '@/stores';
 // const store = useAuthStore();
 
 const router = useRouter()
 const user = useUserStore()
-
+const toast = useToast()
 
 
 const inputPass = ref();
@@ -102,6 +103,7 @@ async function loginn() {
     });
     setItem('access', response.access)
     router.push('/customers')
+    toast.success("Tizimga kirdingiz!")
   } catch (error) {
     console.error('Error fetching sponsors:', error);
   }

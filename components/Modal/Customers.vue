@@ -41,10 +41,8 @@
         </ClientOnly>
       </div>
       <div class="mt-3 flex justify-end">
-        <ButtonVButton class="flex gap-2 group" >
-          <div>
-            <IconsSave class="w-6 h-6 text-[white] group-hover:text-blue-300 duration-300"/>
-          </div>
+        <ButtonVButton class="flex gap-2 group">
+          <IconsSave class="w-6 h-6 text-[white] group-hover:text-blue-300 duration-300"/>
           Saqlash
         </ButtonVButton>
       </div>
@@ -129,6 +127,7 @@ const submitForm = async () => {
     console.log(response)
     props.consumer.value = response
   }
+  emit('close')
 }
 
 
