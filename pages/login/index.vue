@@ -105,6 +105,7 @@ async function loginn() {
     router.push('/customers')
     toast.success("Tizimga kirdingiz!")
   } catch (error) {
+    toast.error("Login yoki parol xato!")
     console.error('Error fetching sponsors:', error);
   }
   // router.push('/')
