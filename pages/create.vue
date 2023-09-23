@@ -150,6 +150,11 @@ const updateQuantity = (item: any) => {
   let newValue = parseInt(item.quantity, 10) || 0;
   newValue = Math.max(0, newValue); // Ensure it doesn't go below 1
   item.quantity = newValue.toString(); // Convert back to string for input field
+  for(let i=0; i<basket.basket.productId.length; i++){
+    if(basket.basket.productId[i].product == item.product.id){
+      basket.basket.productId[i].quantity = newValue
+    }
+  }
 };
 
 const createOrder = () => {

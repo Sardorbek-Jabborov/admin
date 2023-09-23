@@ -67,9 +67,19 @@ export const useBasketStore = defineStore('basket', () => {
             basket.productId = []
             toast.success("Buyurtma yaratildi!")
         })
-            .catch(() => {
-                toast.error("Buyurtma yaratishda xatolik yuz berdi!")
-            })
+            .catch((error) => {
+                console.log(error)
+                if (error.response.status === 400) {
+                    console.log("Working....")
+                    console.log(error.response.data)
+                    for (const [key, value] of Object.entries(error.response.data)) {
+                        toast.error(value)
+                      }
+                    
+                } else {
+                    toast.error("Buyurtma yaratishda xatolik yuz berdi!1")
+                }
+        })
     }
 
     return {
